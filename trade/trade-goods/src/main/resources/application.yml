@@ -2,7 +2,10 @@ server:
   port: 8082
 spring:
   datasource:
-    password: 123456
+    password: 1234
     username: root
     url: jdbc:mysql://192.168.0.105:3306/trade?useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
+mybatis-plus:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.ming.common.pojo

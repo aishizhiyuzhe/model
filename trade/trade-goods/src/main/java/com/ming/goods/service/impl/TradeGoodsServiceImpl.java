@@ -15,8 +15,6 @@ public class TradeGoodsServiceImpl implements TradeGoodsService {
 
     @Override
     public TradeGoods findGoodsId(String goodsId) {
-
-        tradeGoodsMapper.selectById(goodsId);
         return tradeGoodsMapper.selectById(goodsId);
 
     }

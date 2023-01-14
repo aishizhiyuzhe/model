@@ -1,7 +1,9 @@
 package com.ming.goods.mapper;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ming.common.pojo.TradeGoods;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface TradeGoodsMapper extends BaseMapper<TradeGoods> {
+@Mapper
+public interface TradeGoodsMapper{
+    TradeGoods selectById(String goodsId);
 }

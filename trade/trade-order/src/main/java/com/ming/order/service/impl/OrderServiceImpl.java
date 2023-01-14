@@ -38,9 +38,8 @@ public class OrderServiceImpl implements OrderService {
         //2.校验商品是否存在
         if (order.getGoodsId()==null){
             CastException.cast(TradeCode.TRADE_FAIL_GOODS);
-        }else {
-
         }
+
         //3.校验商品数量是否满足
         //todo 是不是应该有锁库存操作
 
