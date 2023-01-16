@@ -6,6 +6,12 @@ spring:
     username: root
     url: jdbc:mysql://192.168.0.105:3306/trade?useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
+  application:
+    name: trade-goods
 mybatis-plus:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.ming.common.pojo
+nacos:
+  discovery:
+    server-addr: 192.168.0.105:8848
+    auto-register: true

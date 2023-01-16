@@ -1,14 +1,40 @@
 package com.ming.order.service.impl;
 
+import com.alibaba.nacos.api.annotation.NacosInjected;
+import com.alibaba.nacos.api.exception.NacosException;
+import com.alibaba.nacos.api.naming.NamingService;
+import com.alibaba.nacos.api.naming.pojo.Instance;
+import com.alibaba.nacos.client.utils.JSONUtils;
 import com.ming.common.code.TradeCode;
 import com.ming.common.exception.CustomerException;
+import com.ming.common.pojo.TradeGoods;
+import com.ming.common.utils.R;
 import com.ming.order.service.OrderService;
 import com.ming.common.pojo.TradeOrder;
 import com.ming.common.exception.CastException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import sun.plugin.com.DispatchClient;
+
+import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    @Resource
+    RestTemplate restTemplate;
+
+    @NacosInjected
+    private NamingService namingService;
+
+    @Value("${goods-url}")
+    private String goodsUrl;
+
     @Override
     public void orderGenerate(TradeOrder order) throws Exception {
         //1.校验订单
@@ -30,7 +56,9 @@ public class OrderServiceImpl implements OrderService {
         //9.返回
     }
 
-    private void checkOrder(TradeOrder order) throws CustomerException {
+    private void checkOrder(TradeOrder order) throws CustomerException, IOException, NacosException {
+
+
         //1.校验订单是否存在
         if (order==null){
             CastException.cast(TradeCode.TRADE_FAIL_ORDER);
@@ -38,8 +66,17 @@ public class OrderServiceImpl implements OrderService {
         //2.校验商品是否存在
         if (order.getGoodsId()==null){
             CastException.cast(TradeCode.TRADE_FAIL_GOODS);
-        }
+        }else {
+            List<Instance> allInstances = namingService.getAllInstances(goodsUrl);
+            Instance goods = allInstances.get(0);
+            Map<String,Object> param=new HashMap<>();
+            param.put("goodsId",order.getGoodsId());
+            R tradeGoods=restTemplate.getForObject("http://"+goods.getIp()+":"+goods.getPort()+"/findGoodsId?goodsId="+order.getGoodsId(),R.class);
+            if (!tradeGoods.isSuccess()){
+                CastException.cast(tradeGoods);
+            }
 
+        }
         //3.校验商品数量是否满足
         //todo 是不是应该有锁库存操作
 

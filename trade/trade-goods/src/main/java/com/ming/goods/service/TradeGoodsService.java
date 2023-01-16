@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 
 public interface TradeGoodsService {
 
-    TradeGoods findGoodsId(String goodsId);
+    TradeGoods findGoodsId(Long goodsId);
 }

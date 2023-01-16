@@ -4,6 +4,7 @@ import com.ming.common.pojo.TradeGoods;
 import com.ming.common.utils.R;
 import com.ming.goods.service.TradeGoodsService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -15,7 +16,7 @@ public class GoodsController {
     TradeGoodsService tradeGoodsService;
 
     @GetMapping("/findGoodsId")
-    public R findGoodsId(String goodsId){
+    public R findGoodsId(Long goodsId){
         R r=new R();
         TradeGoods goods = tradeGoodsService.findGoodsId(goodsId);
         r.ok(goods);

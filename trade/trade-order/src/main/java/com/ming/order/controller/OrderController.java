@@ -4,6 +4,7 @@ import com.ming.order.service.OrderService;
 import com.ming.common.pojo.TradeOrder;
 import com.ming.common.utils.R;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
@@ -14,8 +15,8 @@ public class OrderController {
     @Resource
     OrderService orderService;
 
-    @PostMapping("/")
-    public R orderGenerate(TradeOrder order){
+    @PostMapping("/orderGenerate")
+    public R orderGenerate( @RequestBody TradeOrder order){
         R result=new R();
 
         try {

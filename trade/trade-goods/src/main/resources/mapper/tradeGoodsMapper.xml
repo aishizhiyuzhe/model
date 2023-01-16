@@ -9,7 +9,7 @@
         <result column="goods_desc" property="goodsDesc" jdbcType="VARCHAR" />
         <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
     </resultMap>
-    <select id="selectById" resultMap="BaseResultMap" parameterType="String">
+    <select id="selectById" resultMap="BaseResultMap" parameterType="Long">
         select * from trade_goods where goods_id=${goodsId}
     </select>
 </mapper>

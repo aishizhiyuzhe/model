@@ -5,5 +5,5 @@ import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface TradeGoodsMapper{
-    TradeGoods selectById(String goodsId);
+    TradeGoods selectById(Long goodsId);
 }
