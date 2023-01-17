@@ -6,6 +6,9 @@ public enum TradeCode {
     TRADE_SUCCESS(true, 200, "正确"),
     TRADE_FAIL_ORDER(false, 401, "订单为空"),
     TRADE_FAIL_GOODS(false, 402, "商品为空"),
+    TRADE_FAIL_GOODS_PPRICE(false, 403, "商品价格不匹配"),
+    TRADE_FAIL_GOODS_NUMBER(false, 405, "商品数量不够"),
+    TRADE_FAIL_USER(false, 406, "用户不存在"),
     ;
     String message;
     Boolean success;

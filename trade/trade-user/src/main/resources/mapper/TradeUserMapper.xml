@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ming.user.mapper.TradeUserMapper" >
+  <resultMap id="BaseResultMap" type="com.ming.common.pojo.TradeUser" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_mobile" property="userMobile" jdbcType="VARCHAR" />
+    <result column="user_score" property="userScore" jdbcType="INTEGER" />
+    <result column="user_reg_time" property="userRegTime" jdbcType="TIMESTAMP" />
+    <result column="user_money" property="userMoney" jdbcType="DECIMAL" />
+  </resultMap>
+    <select id="findUserId" resultMap="BaseResultMap" parameterType="Long">
+        select * from trade_user where user_id = ${userId}
+    </select>
+</mapper>

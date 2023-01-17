@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8083
 spring:
   datasource:
     password: 1234
@@ -7,9 +7,7 @@ spring:
     url: jdbc:mysql://192.168.0.105:3306/trade?useUnicode=true&characterEncoding=utf8
     driver-class-name: com.mysql.jdbc.Driver
   application:
-    name: trade-order
-goods-url: trade-goods
-user-url: trade-user
+    name: trade-user
 nacos:
   discovery:
     server-addr: 192.168.0.105:8848

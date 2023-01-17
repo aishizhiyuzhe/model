@@ -16,7 +16,7 @@ public class GoodsController {
     TradeGoodsService tradeGoodsService;
 
     @GetMapping("/findGoodsId")
-    public R findGoodsId(Long goodsId){
+    public R<TradeGoods> findGoodsId(Long goodsId){
         R r=new R();
         TradeGoods goods = tradeGoodsService.findGoodsId(goodsId);
         r.ok(goods);

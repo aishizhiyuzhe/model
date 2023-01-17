@@ -6,21 +6,29 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class R extends HashMap<String,Object> implements Serializable {
+public class R<T> implements Serializable {
+
+    private Integer code;
+    private T data;
+    private Boolean success;
+    private String message;
     public R(){
-        put("success",true);
+        this.code=200;
+        this.success=true;
     }
     public void error(String msg){
-        put("success",false);
-        put("error",msg);
+        this.success=false;
+        this.code=400;
+        this.message=msg;
     }
 
-    public void ok(Object body){
-        put("data",body);
+    public void ok(T body){
+        this.success=true;
+        this.code=200;
+        this.data=body;
     }
 
     public Integer getCode(){
-        Integer code= (Integer) get("code");
         if (code==null){
             return 400;
         }else {
@@ -29,18 +37,18 @@ public class R extends HashMap<String,Object> implements Serializable {
     }
 
     public Boolean isSuccess(){
-        Boolean success= (Boolean) get("success");
         if (success==null){
             success=false;
-            put("success",success);
         }
         return success;
     }
     public String getMessage(){
-        String message= (String) get("message");
         if (StringUtils.isEmpty(message)){
-            put("success","");
+            this.message="";
         }
         return message;
+    }
+    public T getData(){
+        return this.data;
     }
 }
