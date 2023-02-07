@@ -9,6 +9,9 @@ public enum TradeCode {
     TRADE_FAIL_GOODS_PPRICE(false, 403, "商品价格不匹配"),
     TRADE_FAIL_GOODS_NUMBER(false, 405, "商品数量不够"),
     TRADE_FAIL_USER(false, 406, "用户不存在"),
+    TRADE_FAIL_ORDER_AMOUNT(false, 407, "总价格不一致"),
+    TRADE_FAIL_USER_MONEY_PAID(false, 408, "使用余额，金额有问题"),
+    TRADE_FAIL_USER_MONEY_PAID_NO(false, 408, "余额不足"),
     ;
     String message;
     Boolean success;

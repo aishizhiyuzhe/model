@@ -8,6 +8,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   application:
     name: trade-goods
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
 mybatis-plus:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.ming.common.pojo
@@ -15,3 +20,14 @@ nacos:
   discovery:
     server-addr: 192.168.0.105:8848
     auto-register: true
+
+mq:
+  order:
+    consumer:
+      group:
+        name: order_orderTopic_cancel_group
+    topic: orderTopic
+    tag:
+      cancel: order_cancel
+rocketmq:
+  name-server: 192.168.0.104:9876;192.168.0.105:9876

@@ -12,4 +12,8 @@
     <select id="selectById" resultMap="BaseResultMap" parameterType="Long">
         select * from trade_goods where goods_id=${goodsId}
     </select>
+
+    <update id="subtractGoods">
+        update trade_goods set goods_number=goods_number-${goodsNumber} where goods_id=${goodsId}
+    </update>
 </mapper>

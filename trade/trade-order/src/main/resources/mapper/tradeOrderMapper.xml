@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ming.order.mapper.OrderMapper" >
+    <resultMap id="BaseResultMap" type="com.ming.common.pojo.TradeOrder" >
+        <id column="order_id" property="orderId" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+        <result column="pay_status" property="payStatus" jdbcType="INTEGER" />
+        <result column="shipping_status" property="shippingStatus" jdbcType="INTEGER" />
+        <result column="address" property="address" jdbcType="VARCHAR" />
+        <result column="consignee" property="consignee" jdbcType="VARCHAR" />
+        <result column="goods_id" property="goodsId" jdbcType="BIGINT" />
+        <result column="goods_number" property="goodsNumber" jdbcType="INTEGER" />
+        <result column="goods_price" property="goodsPrice" jdbcType="DECIMAL" />
+        <result column="goods_amount" property="goodsAmount" jdbcType="DECIMAL" />
+        <result column="shipping_fee" property="shippingFee" jdbcType="DECIMAL" />
+        <result column="order_amount" property="orderAmount" jdbcType="DECIMAL" />
+        <result column="coupon_id" property="couponId" jdbcType="BIGINT" />
+        <result column="coupon_paid" property="couponPaid" jdbcType="DECIMAL" />
+        <result column="money_paid" property="moneyPaid" jdbcType="DECIMAL" />
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP" />
+        <result column="confirm_time" property="confirmTime" jdbcType="TIMESTAMP" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <insert id="saveOrder" parameterType="com.ming.common.pojo.TradeOrder" >
+        insert into trade_order (order_id, user_id, order_status,
+                                 pay_status, shipping_status, address,
+                                 consignee, goods_id, goods_number,
+                                 goods_price, goods_amount, shipping_fee,
+                                 order_amount, coupon_id, coupon_paid,
+                                 money_paid, pay_amount, add_time,
+                                 confirm_time, pay_time)
+        values (#{orderId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{orderStatus,jdbcType=INTEGER},
+                #{payStatus,jdbcType=INTEGER}, #{shippingStatus,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR},
+                #{consignee,jdbcType=VARCHAR}, #{goodsId,jdbcType=BIGINT}, #{goodsNumber,jdbcType=INTEGER},
+                #{goodsPrice,jdbcType=DECIMAL}, #{goodsAmount,jdbcType=DECIMAL}, #{shippingFee,jdbcType=DECIMAL},
+                #{orderAmount,jdbcType=DECIMAL}, #{couponId,jdbcType=BIGINT}, #{couponPaid,jdbcType=DECIMAL},
+                #{moneyPaid,jdbcType=DECIMAL}, #{payAmount,jdbcType=DECIMAL}, #{addTime,jdbcType=TIMESTAMP},
+                #{confirmTime,jdbcType=TIMESTAMP}, #{payTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>

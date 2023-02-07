@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ming.goods.mapper.TradeGoodsNumberLogMapper" >
+  <resultMap id="BaseResultMap" type="com.ming.common.pojo.TradeGoodsNumberLog" >
+    <id column="goods_id" property="goodsId" jdbcType="BIGINT" />
+    <id column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="goods_number" property="goodsNumber" jdbcType="INTEGER" />
+    <result column="log_time" property="logTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <insert id="insertGoodsLog" parameterType="com.ming.common.pojo.TradeGoodsNumberLog">
+        insert into trade_goods_number_log values(${goodsId},${goodsNumber},${logTime},${orderId})
+  </insert>
+</mapper>
