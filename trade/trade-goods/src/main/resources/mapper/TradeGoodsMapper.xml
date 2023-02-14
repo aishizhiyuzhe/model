@@ -16,4 +16,8 @@
     <update id="subtractGoods">
         update trade_goods set goods_number=goods_number-${goodsNumber} where goods_id=${goodsId}
     </update>
+
+    <update id="updateGoods">
+        update trade_goods set goods_number=${goodsNumber} where goods_id=${goodsId}
+    </update>
 </mapper>

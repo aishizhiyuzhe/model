@@ -8,4 +8,6 @@ public interface TradeGoodsNumberLogMapper {
 
     void insertGoodsLog(TradeGoodsNumberLog tradeGoodsNumberLog);
 
+    TradeGoodsNumberLog selectOrderId(Long orderId);
+
 }

@@ -12,6 +12,10 @@ public enum TradeCode {
     TRADE_FAIL_ORDER_AMOUNT(false, 407, "总价格不一致"),
     TRADE_FAIL_USER_MONEY_PAID(false, 408, "使用余额，金额有问题"),
     TRADE_FAIL_USER_MONEY_PAID_NO(false, 408, "余额不足"),
+    TRADE_MQ_MESSAGE_STATUS_SUCCESS(true, 1, "消息处理成功"),
+    TRADE_MQ_MESSAGE_STATUS_PROCESSING(true, 0, "消息正在处理"),
+    TRADE_MQ_MESSAGE_STATUS_FAIL(false, 2, "消息处理失败"),
+
     ;
     String message;
     Boolean success;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ming.goods.mapper.TradeMqConsumerLogMapper" >
+    <resultMap id="BaseResultMap" type="com.ming.common.pojo.TradeMqConsumerLog" >
+      <id column="group_name" property="groupName" jdbcType="VARCHAR" />
+      <id column="msg_tag" property="msgTag" jdbcType="VARCHAR" />
+      <id column="msg_key" property="msgKey" jdbcType="VARCHAR" />
+      <result column="msg_id" property="msgId" jdbcType="VARCHAR" />
+      <result column="msg_body" property="msgBody" jdbcType="VARCHAR" />
+      <result column="consumer_status" property="consumerStatus" jdbcType="INTEGER" />
+      <result column="consumer_times" property="consumerTimes" jdbcType="INTEGER" />
+      <result column="consumer_timestamp" property="consumerTimestamp" jdbcType="TIMESTAMP" />
+      <result column="remark" property="remark" jdbcType="VARCHAR" />
+    </resultMap>
+    <select id="selectKey" resultMap="BaseResultMap" parameterType="com.ming.common.pojo.TradeMqConsumerLogKey">
+        select * from trade_mq_consumer_log where group_name =#{groupName} and msg_tag=#{msgTag}  and msg_key =#{msgKey}
+    </select>
+
+    <update id="updateMsg"  parameterType="com.ming.common.pojo.TradeMqConsumerLog">
+        update trade_mq_consumer_log
+        <set>
+            <if test="consumerLog.consumerStatus !=null">
+                consumer_status = #{consumerLog.consumerStatus},
+            </if>
+            <if test="consumerLog.consumerTimes != null" >
+                consumer_times = #{consumerLog.consumerTimes,jdbcType=INTEGER},
+            </if>
+            <if test="consumerLog.consumerTimestamp != null" >
+                consumer_timestamp = #{consumerLog.consumerTimestamp,jdbcType=TIMESTAMP},
+            </if>
+            <if test="consumerLog.remark != null" >
+                remark = #{consumerLog.remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            where msg_key = #{consumerLog.msgKey,jdbcType=VARCHAR}
+                and msg_tag = #{consumerLog.msgTag,jdbcType=VARCHAR}
+                and group_name = #{consumerLog.groupName,jdbcType=VARCHAR}
+                and consumer_times = #{consumerLog.consumerTimes,jdbcType=INTEGER}
+        </if>
+    </update>
+    <insert id="insert" parameterType="com.ming.common.pojo.TradeMqConsumerLog" >
+        insert into trade_mq_consumer_log (group_name, msg_tag, msg_key,
+                                           msg_id, msg_body, consumer_status,
+                                           consumer_times, consumer_timestamp, remark
+        )
+        values (#{groupName}, #{msgTag}, #{msgKey},
+                #{msgId}, #{msgBody}, #{consumerStatus},
+                #{consumerTimes,jdbcType=INTEGER}, #{consumerTimestamp,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR}
+               )
+    </insert>
+
+</mapper>

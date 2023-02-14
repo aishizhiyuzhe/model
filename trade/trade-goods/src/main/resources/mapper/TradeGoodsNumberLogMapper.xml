@@ -8,6 +8,10 @@
     <result column="log_time" property="logTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <insert id="insertGoodsLog" parameterType="com.ming.common.pojo.TradeGoodsNumberLog">
-        insert into trade_goods_number_log values(${goodsId},${goodsNumber},${logTime},${orderId})
+        insert into trade_goods_number_log values(#{goodsId},#{orderId},#{goodsNumber},#{logTime})
   </insert>
+
+  <select id="selectOrderId" parameterType="Long" resultMap="BaseResultMap">
+    select * from trade_goods_number_log where order_id=${orderId}
+  </select>
 </mapper>

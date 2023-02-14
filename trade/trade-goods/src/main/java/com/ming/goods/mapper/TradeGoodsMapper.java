@@ -9,4 +9,6 @@ public interface TradeGoodsMapper{
     TradeGoods selectById(Long goodsId);
 
     void subtractGoods(@Param("goodsId") Long goodsId,@Param("goodsNumber") Integer goodsNumber);
+
+    void updateGoods(TradeGoods tradeGoods);
 }
