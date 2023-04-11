@@ -28,4 +28,11 @@ public class LoginController{
         System.out.println(test);
         return test;
     }
+
+    @RequestMapping("/err")
+    public String err() throws Exception {
+        String test="报错测试";
+        System.out.println(test);
+        throw new Exception("错误");
+    }
 }

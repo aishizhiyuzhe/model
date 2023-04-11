@@ -17,6 +17,9 @@ public enum TradeCode {
     TRADE_MQ_MESSAGE_STATUS_FAIL(false, 2, "消息处理失败"),
 
     FORBID_ERROR_MIXED(false,100_403_002, "无权限:%s"),
+    // 全局，数据不存在
+    RECORDS_NOT_EXISTS(false,100_404_001, "记录不存在:%s"),
+    SYSTEM_ERR(false,100_500_001, "系统错误:%s"),
 
     ;
     String message;
