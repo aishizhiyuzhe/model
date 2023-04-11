@@ -16,6 +16,8 @@ public enum TradeCode {
     TRADE_MQ_MESSAGE_STATUS_PROCESSING(true, 0, "消息正在处理"),
     TRADE_MQ_MESSAGE_STATUS_FAIL(false, 2, "消息处理失败"),
 
+    FORBID_ERROR_MIXED(false,100_403_002, "无权限:%s"),
+
     ;
     String message;
     Boolean success;

@@ -1,10 +1,9 @@
 package com.ming.common.utils;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import com.alibaba.fastjson.JSONObject;
+import com.ming.common.code.TradeCode;
 import org.apache.commons.lang3.StringUtils;
-
 import java.io.Serializable;
-import java.util.HashMap;
 
 public class R<T> implements Serializable {
 
@@ -20,6 +19,18 @@ public class R<T> implements Serializable {
         this.success=false;
         this.code=400;
         this.message=msg;
+    }
+
+    public void error(TradeCode tradeCode){
+        this.success=tradeCode.getSuccess();
+        this.code=tradeCode.getCode();
+        this.message=tradeCode.getMessage();
+    }
+
+    public void error(TradeCode tradeCode,String message){
+        this.success=tradeCode.getSuccess();
+        this.code=tradeCode.getCode();
+        this.message=String.format(tradeCode.getMessage(),message);
     }
 
     public void ok(T body){
@@ -50,5 +61,15 @@ public class R<T> implements Serializable {
     }
     public T getData(){
         return this.data;
+    }
+
+    public String toJson(){
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("success",success);
+        jsonObject.put("msg",message);
+        jsonObject.put("code",code);
+        if (null!=data)
+        jsonObject.put("data",data);
+        return jsonObject.toJSONString();
     }
 }

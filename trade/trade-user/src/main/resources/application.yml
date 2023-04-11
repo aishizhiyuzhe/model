@@ -8,7 +8,11 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
   application:
     name: trade-user
-nacos:
-  discovery:
-    server-addr: 192.168.0.105:8848
-    auto-register: true
+  redis:
+    host: 192.168.0.105
+    port: 6379
+    password:
+#nacos:
+#  discovery:
+#    server-addr: 192.168.0.105:8848
+#    auto-register: true
