@@ -1,5 +1,7 @@
 server:
   port: 8083
+host:
+  192.168.0.106
 spring:
   datasource:
     password: 1234
@@ -12,6 +14,12 @@ spring:
     host: 192.168.0.105
     port: 6379
     password:
+  thymeleaf:
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html
+    cache: false
 #nacos:
 #  discovery:
 #    server-addr: 192.168.0.105:8848

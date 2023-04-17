@@ -46,6 +46,7 @@ public class GlobalExceptionHandler implements HandlerExceptionResolver {
         if (exception instanceof HttpMediaTypeNotAcceptableException){
             r.error(TradeCode.RECORDS_NOT_EXISTS,"不存在");
         }else {
+            exception.printStackTrace();
             log.error("未知错误");
             r.error(TradeCode.SYSTEM_ERR,"未知错误");
         }
