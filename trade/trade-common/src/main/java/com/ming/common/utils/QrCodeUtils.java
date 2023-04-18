@@ -12,10 +12,12 @@ import com.google.zxing.qrcode.encoder.QRCode;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.OutputStream;
 import java.util.HashMap;
@@ -63,6 +65,24 @@ public class QrCodeUtils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static String createCodeToBase64(String content) throws Exception {
+        if (StringUtils.isBlank(content)) {
+            return "";
+        }
+        content = content.trim();
+        //核心代码-生成二维码
+        BufferedImage bufferedImage = getBufferedImage(content);
+
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        ImageIO.write(bufferedImage, "png", bos);
+
+        byte[] byt = bos.toByteArray();
+        String res = new BASE64Encoder().encodeBuffer(byt).trim();
+
+        bos.close();
+        return res;
     }
 
     //核心代码-生成二维码

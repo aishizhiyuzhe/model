@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="SpringBoot thymeleaf">
+    <meta name="author" content="Ming">
+
+    <title>扫描登录界面</title>
+</head>
+<body>
+    <div>确定登录吗</div>
+    <div>
+        <a id="login">登录</a>
+    </div>
+    <script th:inline="javascript">
+        function guid(){
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxx'.replace(/[xy]/g,function (c){
+                var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8)
+                return v.toString(16);
+            })
+        }
+        var url=[[${url}]];
+        document.getElementById("login").href=url+"&token="+guid();
+    </script>
+</body>
+</html>

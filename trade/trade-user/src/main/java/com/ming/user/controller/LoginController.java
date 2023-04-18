@@ -5,9 +5,14 @@ import com.ming.common.permission.UserRole;
 import com.ming.common.utils.GenerateUtils;
 import com.ming.common.utils.QrCodeUtils;
 import com.ming.user.QrLoginHelp;
+import com.sun.org.apache.xerces.internal.util.DOMUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.util.xml.DomUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -61,9 +66,10 @@ public class LoginController{
         throw new Exception("错误");
     }
 
-    @RequestMapping("/qr")
-    public void qr(HttpServletRequest request,HttpServletResponse response) throws Exception {
+    @GetMapping("/qr")
+    public String qr(Map<String,Object> data,HttpServletRequest request,HttpServletResponse response) throws Exception {
 
+        String url=host+":"+port+"/";
         Cookie[] cookies=request.getCookies();
         String appCode="";
         if (cookies!=null){
@@ -80,18 +86,63 @@ public class LoginController{
         }
         Cookie cookie=new Cookie(appCodeCookie,appCode);
         response.addCookie(cookie);
-
-        String verificationCode=qrLoginHelp.generatorVerificationCode(appCode);
-        QrCodeUtils.createCodeToOutputStream(host+":"+port+"/scan?ver="+verificationCode+"&appCode="+appCode,response.getOutputStream());
-
+        //生成二维码
+//        String verificationCode=qrLoginHelp.generatorVerificationCode(appCode);
+        String codeToBase64 = QrCodeUtils.createCodeToBase64(url + "/scan?appCode=" + appCode);
+        data.put("subscribe",url+"subscribe?id="+appCode);
+        data.put("redirect",url+"home?id="+appCode);
+        //传base时，需要带头，否则会无法识别
+        data.put("qrcode", "data:image/png;base64,"+codeToBase64);
+        return "login";
+    }
+    @GetMapping(path="/subscribe",produces = {MediaType.TEXT_EVENT_STREAM_VALUE})
+    public SseEmitter subscribe(String appCode){
+        SseEmitter sseEmitter = cache.get(appCode);
+        if (sseEmitter==null){
+            sseEmitter=new SseEmitter(5*60*1000L);
+            cache.put(appCode,sseEmitter);
+            sseEmitter.onTimeout(()->cache.remove(appCode));
+            sseEmitter.onError((e)->cache.remove(appCode));
+        }
+        return sseEmitter;
     }
 
     @RequestMapping("/scan")
-    public String scan(@RequestParam("appCode")String appCode) throws IOException {
+    public String scan(Model model, @RequestParam("appCode")String appCode) throws IOException {
         SseEmitter sseEmitter = cache.get(appCode);
         if (sseEmitter!=null){
             sseEmitter.send("scan");
         }
+        String url=host+":"+port+"/accept?appCode="+appCode;
+        model.addAttribute("url",url);
+        return "scan";
     }
 
+    @ResponseBody
+    @RequestMapping("/accept")
+    public String accept(@RequestParam("appCode")String appCode, @RequestParam("token") String token) throws IOException {
+        SseEmitter sseEmitter = cache.get(appCode);
+        if (sseEmitter!=null){
+            sseEmitter.send("login#qrLogin"+token);
+            sseEmitter.complete();
+            cache.remove(appCode);
+        }
+
+        return "登录成功";
+    }
+    @ResponseBody
+    @RequestMapping("/home")
+    public String home(HttpServletRequest request) throws IOException {
+        Cookie[] cookies=request.getCookies();
+        String token="";
+        if (cookies!=null){
+            for (int i=0,len=cookies.length;i<len;i++){
+                if ("token".equals(cookies[i].getName())){
+                    token=cookies[i].getValue();
+                    break;
+                }
+            }
+        }
+        return "欢迎进入首页"+token;
+    }
 }
