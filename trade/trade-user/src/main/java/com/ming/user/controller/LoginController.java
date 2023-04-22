@@ -12,10 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.xml.DomUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import javax.annotation.Resource;
@@ -28,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Controller
 @Permission
+@CrossOrigin
 public class LoginController{
 
     @Value("${host}")
@@ -41,7 +39,7 @@ public class LoginController{
     @Resource
     private QrLoginHelp qrLoginHelp;
 
-    private Map<String, SseEmitter> cache=new ConcurrentHashMap<>();
+    private static Map<String, SseEmitter> cache=new ConcurrentHashMap<>();
 
     @RequestMapping("/test")
     @ResponseBody
@@ -69,7 +67,7 @@ public class LoginController{
     @GetMapping("/qr")
     public String qr(Map<String,Object> data,HttpServletRequest request,HttpServletResponse response) throws Exception {
 
-        String url=host+":"+port+"/";
+        String url="http://"+host+":"+port;
         Cookie[] cookies=request.getCookies();
         String appCode="";
         if (cookies!=null){
@@ -89,21 +87,19 @@ public class LoginController{
         //生成二维码
 //        String verificationCode=qrLoginHelp.generatorVerificationCode(appCode);
         String codeToBase64 = QrCodeUtils.createCodeToBase64(url + "/scan?appCode=" + appCode);
-        data.put("subscribe",url+"subscribe?id="+appCode);
-        data.put("redirect",url+"home?id="+appCode);
+        data.put("subscribe",url+"/subscribe?appCode="+appCode);
+        data.put("redirect",url+"/home?appCode="+appCode);
         //传base时，需要带头，否则会无法识别
         data.put("qrcode", "data:image/png;base64,"+codeToBase64);
         return "login";
     }
     @GetMapping(path="/subscribe",produces = {MediaType.TEXT_EVENT_STREAM_VALUE})
     public SseEmitter subscribe(String appCode){
-        SseEmitter sseEmitter = cache.get(appCode);
-        if (sseEmitter==null){
-            sseEmitter=new SseEmitter(5*60*1000L);
-            cache.put(appCode,sseEmitter);
-            sseEmitter.onTimeout(()->cache.remove(appCode));
-            sseEmitter.onError((e)->cache.remove(appCode));
-        }
+        SseEmitter  sseEmitter=new SseEmitter(5*60*1000L);
+        cache.put(appCode,sseEmitter);
+        sseEmitter.onTimeout(()->cache.remove(appCode));
+        sseEmitter.onError((e)->cache.remove(appCode));
+
         return sseEmitter;
     }
 
@@ -113,7 +109,7 @@ public class LoginController{
         if (sseEmitter!=null){
             sseEmitter.send("scan");
         }
-        String url=host+":"+port+"/accept?appCode="+appCode;
+        String url="http://"+host+":"+port+"/accept?appCode="+appCode;
         model.addAttribute("url",url);
         return "scan";
     }
